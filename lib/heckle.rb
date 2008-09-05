@@ -200,6 +200,16 @@ class Heckle < SexpProcessor
     original = RubyToRuby.new.process(@original_tree.deep_clone)
     @reporter.replacing(klass_name, method_name, original, src) if @@debug
 
+    if @previous_mutations_left && @previous_mutations_left - mutations_left < 1
+      puts "Possible death: Continue?"
+      continue = $stdin.gets.chomp
+      unless continue == "yes"
+        display_failures
+        exit
+      end
+    end
+    @previous_mutations_left = mutations_left
+
     clean_name = method_name.to_s.gsub(/self\./, '')
     self.count += 1
     new_name = "h#{count}_#{clean_name}"
