@@ -171,6 +171,10 @@ class Heckle < SexpProcessor
 
     reset # in case we're validating again. we should clean up.
 
+    display_failures
+  end
+
+  def display_failures
     unless @failures.empty?
       @reporter.no_failures
       @failures.each do |failure|
